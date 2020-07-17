@@ -174,14 +174,13 @@
 				for (var j = 0; j < referFields.length; j++) {
 					var referField = referFields[j];
 					for (var i = 0; i < recordList.length; i++) {
-						if (recordList[i][referField.originField]) {
-                            // add column for background link
-                            linksReferFieldsToFix.push(this.fixLink(
-                                cmp,
-                                recordList[i][referField.originField],
-                                referField.referenceTo
-                            ));
-                        }
+						// 参照先が null でも navigate 先は取得
+						// add column for background link
+						linksReferFieldsToFix.push(this.fixLink(
+							cmp,
+							recordList[i][referField.originField],
+							referField.referenceTo
+						));
 					}
 				}
 
