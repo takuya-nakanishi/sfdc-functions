@@ -7,7 +7,7 @@
             component.get("v.isInit", false);
         }
     },
-  
+
     handleSelection: function(component, event, helper) {
         var item = event.currentTarget;
         if (item && item.dataset) {
@@ -27,23 +27,23 @@
             helper.firechangedValuesEvent();
         }
     },
-  
+
     handleMouseLeave: function(component, event, helper) {
         component.set("v.dropdownOver", false);
         var mainDiv = component.find('main-div');
         $A.util.removeClass(mainDiv, 'slds-is-open');
     },
-  
+
     handleMouseEnter: function(component, event, helper) {
         component.set("v.dropdownOver", true);
     },
-  
+
     handleMouseOutButton: function(component, event, helper) {
         window.setTimeout(
             $A.getCallback(function() {
                 if (component.isValid()) {
                     if (component.get("v.dropdownOver")) {
-                    return;
+                        return;
                     }
                     var mainDiv = component.find('main-div');
                     $A.util.removeClass(mainDiv, 'slds-is-open');
@@ -51,5 +51,4 @@
             }), 200
         );
     }
-  
-  })
+})

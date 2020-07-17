@@ -2,15 +2,18 @@
 
 	doInit : function (component, event, helper){
 		component.set("v.noPicklistMatch",!helper.isValueInPicklistOptions(component));
-	},  
+	},
+
 	refresh : function (component, event, helper){
 		//enable or disable the components
 		helper.enableOrDisableFields(component);
 	},
+
 	initEditDataForm : function(component, event, helper) {
 		helper.checkAndFormatTimeInput(component);
 		component.set("v.noPicklistMatch",!helper.isValueInPicklistOptions(component));
 	},
+
 	onChange : function(component, event, helper) {
 		// Incase not a textbox
 		if (typeof(event.currentTarget.type) !== 'undefined'){
@@ -56,25 +59,25 @@
 					component.set('v.errorMsg', '');
 				}
 			}
-
 			component.set("v.value",valueChanged);
 			$A.util.addClass(component.find('myStandardInput'), 'item-changed');
 		}
 		var fieldChangedEvent = $A.get("e.c:SF_EditInputChangeEvent");
-
 		fieldChangedEvent.setParams({
-			"fieldName" : component.get("v.name"), 
+			"fieldName" : component.get("v.name"),
 			"fieldType" : component.get("v.type"),
 			"rowIndex" :  component.get("v.rowIndex"),
 			"newValue" : valueChanged
 		});
 		fieldChangedEvent.fire();
 	},
+
 	lostFocus : function(component) {
 		if(component.get("v.subType") === "number" && component.get("v.value") === ''){
 			component.set("v.value",0);
 		}
 	},
+
 	clearText : function(component, event, helper) {
 		if (event && typeof(event.currentTarget.type) !== 'undefined'){
 			component.set("v.value",'');
@@ -85,11 +88,12 @@
 
 			$A.util.addClass(component.find('myStandardInput'), 'item-changed');
 			component.find('myStandardInput').focus();
-
 			// var eventChange = component.getEvent('change');
 			// eventChange.fire();
 		}		
-	}/*,
+	},
+
+	/*
     updateTabIndex: function(cmp, event){
     	console.log('into update tab index event');
     	var params = event.getParam('arguments');
@@ -98,5 +102,6 @@
     		console.log('tabindex: ' + tabIndex);
     		cmp.set('v.tabIndex', tabIndex);
     	}
-    }*/
+	}
+	*/
 })

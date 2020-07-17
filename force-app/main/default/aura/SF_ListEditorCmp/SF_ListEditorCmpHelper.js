@@ -70,6 +70,7 @@
       }
       return component.get("v.title")
    },
+
    setFieldsEachMode: function(component,fields){
       let fieldsViewMode = [];
       let fieldsEditMode = [];
@@ -84,6 +85,7 @@
       component.set('v.fieldsViewMode',fieldsViewMode.join(','));
       component.set('v.fieldsEditMode',fieldsEditMode.join(','));
    },
+
    pushFieldsEachMode: function(fields,modeFirst,numFirst,modeSecond,numSecond){
       let index = 0;
       while(index < fields.length && index<numFirst){

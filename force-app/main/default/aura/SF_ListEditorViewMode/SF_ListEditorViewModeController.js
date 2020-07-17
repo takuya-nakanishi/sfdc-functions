@@ -1,10 +1,10 @@
 ({
-	init: function (cmp, event, helper) {
+	init: function(cmp, event, helper) {
         var recordList = cmp.get('v.recordList');
         const isHaveNoError = cmp.get("v.isHaveNoError");
         let condition = cmp.get('v.conditionsFilterList');
         cmp.set('v.originCondition',condition);
-		if(recordList.length > 0 && isHaveNoError){
+		if (recordList.length > 0 && isHaveNoError) {
             helper.getColumnDefinitions(cmp, recordList);
             helper.getObjectLabel(cmp);
         	helper.getRelationshipName(cmp);
@@ -15,10 +15,9 @@
                 cmp.set("v.title",  defaultObjectLabel);
             }
         }
-        
     },
 
-    reloadData: function(cmp, event, helper){
+    reloadData: function(cmp, event, helper) {
         var recordList = cmp.get('v.recordList');
         const isHaveNoError = cmp.get("v.isHaveNoError");
         if (isHaveNoError) {
@@ -29,13 +28,12 @@
         }
     },
 
-    refresh: function(cmp, event, helper){
+    refresh: function(cmp, event, helper) {
         var compEvent = cmp.getEvent("refreshRecordList");
         compEvent.fire();
     },
 
     updateColumnSorting: function(cmp, event, helper) {
-        
         var fieldName;
         var temp = event.getParam('fieldName');
         var prefixes = ['refer','per','pick'];
@@ -44,7 +42,7 @@
 
         fieldName = temp;
         prefixes.some(prefix => {
-            if(temp.indexOf(prefix) == 0) {
+            if (temp.indexOf(prefix) == 0) {
                 fieldName = temp.slice(prefix.length);
                 return true;
             }
@@ -56,7 +54,7 @@
         cmp.set('v.isOrderDESC',sortDirection == 'desc');
     },
 
-    handleRowAction: function(cmp, event, helper){
+    handleRowAction: function(cmp, event, helper) {
     	var action = event.getParam('action');
         var row = event.getParam('row');
         var rows = cmp.get('v.rawData');
@@ -74,7 +72,7 @@
         }
     },
 
-    deleteRecord: function(cmp, event, helper){
+    deleteRecord: function(cmp, event, helper) {
         helper.handleDeleteRow(cmp);
         cmp.set("v.isOpen", false);
     },
@@ -83,16 +81,16 @@
       component.set("v.isOpen", false);
     },
 
-    navigateToListView: function(cmp, event, helper){
+    navigateToListView: function(cmp, event, helper) {
         //console.log('into navigateToListView');
         window.open('/lightning/r/' + cmp.get('v.recordId') + '/related/' + cmp.get('v.relationField') + '/view','_top')
     },
 
-    switchMode: function(cmp, event, helper){
+    switchMode: function(cmp, event, helper) {
     	cmp.set('v.isEditMode',true);
     },
 
-    addMode: function(cmp, event, helper){
+    addMode: function(cmp, event, helper) {
         var objectName = cmp.get('v.objectName');
         var parentField = cmp.get('v.parentField');
         var recordId = cmp.get('v.recordId');
@@ -106,40 +104,40 @@
         createObjectEvent.fire();
     },
 
-    onChangeParent: function(cmp, event, helper){
+    onChangeParent: function(cmp, event, helper) {
         var compEvent = cmp.getEvent("refreshRecordList");
         //console.log('parent field: ' + cmp.get('v.parentField'));
         compEvent.setParams({parentField: cmp.get('v.parentField')});
         compEvent.fire();
     },
 
-    toggleFilterPopup: function(cmp,event,helper){
+    toggleFilterPopup: function(cmp,event,helper) {
         let isShowFilter = cmp.get('v.isShowFilter');
         cmp.set('v.isShowFilter',!isShowFilter);
     },
-    setFilter: function(cmp,event,helper){
+
+    setFilter: function(cmp,event,helper) {
         let conditionsFilterList = cmp.get('v.originCondition');
         let filterFields = cmp.get('v.filterFields');
         filterFields.forEach((field) => {
-            if(conditionsFilterList && conditionsFilterList.trim()&&(field.value || field.minValue || field.maxValue)) conditionsFilterList+= ' AND ';
-            if(field.hasTwoValue){
-                if(field.minValue){
-                    if(field.fieldType != 'DOUBLE') field.minValue = field.minValue.replace('/','-');
+            if (conditionsFilterList && conditionsFilterList.trim()&&(field.value || field.minValue || field.maxValue)) conditionsFilterList+= ' AND ';
+            if (field.hasTwoValue) {
+                if (field.minValue) {
+                    if (field.fieldType != 'DOUBLE') field.minValue = field.minValue.replace('/','-');
                     conditionsFilterList += ` ${field.fieldApiName} >= ${field.minValue}`;
-                    if(field.maxValue){
+                    if (field.maxValue) {
                         conditionsFilterList+=' AND ';
                     }
                 }
-                if(field.maxValue){
-                    if(field.fieldType != 'DOUBLE') field.maxValue = field.maxValue.replace('/','-');
+                if (field.maxValue) {
+                    if (field.fieldType != 'DOUBLE') field.maxValue = field.maxValue.replace('/','-');
                     conditionsFilterList += `${field.fieldApiName} <= ${field.maxValue}`;
                 }
-            }else{
-                if(field.value){
+            } else {
+                if (field.value) {
                     conditionsFilterList +=`${field.fieldApiName} = '${field.value}'`;
                 }
             }
-            
         })
         cmp.set('v.conditionsFilterList',conditionsFilterList);
         cmp.set('v.isShowFilter',false);

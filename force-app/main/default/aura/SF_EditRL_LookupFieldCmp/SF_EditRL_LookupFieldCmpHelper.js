@@ -18,7 +18,7 @@
         // Get the API Name
         //var sObjectAPIName = cmp.get('v.sObjectAPIName');
 		var objectsToSearch = cmp.get('v.objectsToSearch');
-        
+
         // Create an Apex action
         var action = cmp.get('c.lookup');
 
@@ -30,7 +30,7 @@
 
         // Define the callback
         action.setCallback(this, function(response) {
-            
+
             // Callback succeeded
             var state = response.getState();
             if (cmp.isValid() && state === "SUCCESS"){
@@ -45,7 +45,7 @@
 
                 // Store the results
                 cmp.set('v.matches', matches);
-            } else if (state === "ERROR"){   
+            } else if (state === "ERROR"){
                 // Handle any error by reporting it
                 var errors = response.getError();
                 if (errors){
@@ -60,7 +60,7 @@
 
         // Enqueue the action if 2 characters at least for an effective search
         if (!(typeof searchString === 'undefined' || searchString.length < 2 )){
-            $A.enqueueAction(action); 
+            $A.enqueueAction(action);
             var objname = objectsToSearch[0];
 
             if (objectsToSearch.length > 1) {
@@ -131,13 +131,12 @@
 
                 // Update the Searchstring with the Label
                 cmp.set("v.searchString", queryResult.recLabel);
-                
+
                 //update the icon
                 cmp.set("v.iconName",queryResult.objectIcon);
 
                 var lookupDiv = cmp.find('lookup-div');
                 $A.util.removeClass(lookupDiv, 'slds-is-open');
-
 
                 // Hide the Input Element
                 var inputElement = cmp.find('lookup');
@@ -151,7 +150,7 @@
                 var inputElement = cmp.find('lookup-div');
                 $A.util.addClass(inputElement, 'slds-has-selection');
 
-            } else if (state === "ERROR") {   
+            } else if (state === "ERROR") {
                 // Handle any error by reporting it
                 var errors = response.getError();
                 if (errors){
@@ -166,13 +165,13 @@
 
         // Enqueue the action
         $A.enqueueAction(action);
-		cmp.set("v.prevSelectedItemId",objectId); 
+		cmp.set("v.prevSelectedItemId",objectId);
     },
+
     /**
      * Clear the Selection
      */
     clearSelection : function(cmp) {
-
 		// Clear the Searchstring
         cmp.set("v.searchString", '');
 
@@ -181,7 +180,7 @@
             return;
         } else {
             cmp.set("v.selectedItemId",'');
-        }        
+        }
         cmp.set("v.selectedItemLabel",'');
 
         // Hide the Lookup pill
@@ -206,6 +205,7 @@
         var i = elmId.lastIndexOf('_');
         return elmId.substr(i+1);
     },
+
     /**
      * Display a message
      */
@@ -218,7 +218,6 @@
                 "title": title,
                 "message": message
             });
-
             toast.fire();
         } else {
             // otherwise throw an alert
@@ -228,7 +227,7 @@
 
     isArrowKeyUp : function (event) {
         return event.which === 38;
-    }, 
+    },
 
     isArrowKeyDown : function (event) {
         return event.which === 40;
@@ -237,13 +236,13 @@
     isEnterKey : function (event) {
         return event.which === 13;
     },
-    
+
     findNextSelectedIndex: function (event, currentSelectedIndex, arrayLength) {
         const maxIndex = arrayLength - 1;
         if (this.isArrowKeyDown(event)) {
-            return currentSelectedIndex === maxIndex ? 0 : currentSelectedIndex + 1;    
+            return currentSelectedIndex === maxIndex ? 0 : currentSelectedIndex + 1;
         } else {
-            return  currentSelectedIndex === 0 ? maxIndex : currentSelectedIndex - 1;  
+            return  currentSelectedIndex === 0 ? maxIndex : currentSelectedIndex - 1;
         }
     }
 })

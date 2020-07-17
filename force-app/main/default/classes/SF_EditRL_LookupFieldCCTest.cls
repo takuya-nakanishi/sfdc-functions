@@ -8,10 +8,10 @@
 public class SF_EditRL_LookupFieldCCTest {
 
     /**
-    * Testing for get information of lookup field: Normal case
-    * @param Id recordId, String[] objectsToSearch
-    * @return ResultDataLookup
-    */
+     * Testing for get information of lookup field: Normal case
+     * @param Id recordId, String[] objectsToSearch
+     * @return ResultDataLookup
+     */
     @isTest static void getRecordNameTest1() {
         Contact targetContact = new Contact(FirstName='first name', LastName='last name');
         String[] lstObject = new List<String>{'Contact'};
@@ -22,10 +22,10 @@ public class SF_EditRL_LookupFieldCCTest {
     }
 
     /**
-    * Testing for get information of lookup field: abnormal case -- recordId null
-    * @param Id recordId, String[] objectsToSearch
-    * @return ResultDataLookup
-    */
+     * Testing for get information of lookup field: abnormal case -- recordId null
+     * @param Id recordId, String[] objectsToSearch
+     * @return ResultDataLookup
+     */
     @isTest static void getRecordNameTest2() {
         String[] lstObject = new List<String>{'Contact'};
         SF_EditRL_LookupFieldCC.ResultDataLookup dataRes = SF_EditRL_LookupFieldCC.getRecordName(null,lstObject);
@@ -36,10 +36,10 @@ public class SF_EditRL_LookupFieldCCTest {
     }
 
     /**
-    * Testing for get information of lookup field: abnormal case -- Object not exist
-    * @param Id recordId, String[] objectsToSearch
-    * @return ResultDataLookup
-    */
+     * Testing for get information of lookup field: abnormal case -- Object not exist
+     * @param Id recordId, String[] objectsToSearch
+     * @return ResultDataLookup
+     */
     @isTest static void getRecordNameTest4() {
         Contact targetContact = new Contact(FirstName='first name', LastName='last name');
         String[] lstObject = new List<String>{'xxxx'};
@@ -52,10 +52,10 @@ public class SF_EditRL_LookupFieldCCTest {
     }
 
     /**
-    * Testing for get information of lookup field: Normal case
-    * @param Id recordId, String[] objectsToSearch
-    * @return ResultDataLookup
-    */
+     * Testing for get information of lookup field: Normal case
+     * @param Id recordId, String[] objectsToSearch
+     * @return ResultDataLookup
+     */
     @isTest static void getRecordNameTest5() {
         Case targetCase = new Case(Status='New', Subject='subject 1', Origin='Phone');
         String[] lstObject = new List<String>{'Case'};
@@ -66,10 +66,10 @@ public class SF_EditRL_LookupFieldCCTest {
     }
 
     /**
-    * Testing for get information of lookup field: Normal case
-    * @param Id recordId, String[] objectsToSearch
-    * @return ResultDataLookup
-    */
+     * Testing for get information of lookup field: Normal case
+     * @param Id recordId, String[] objectsToSearch
+     * @return ResultDataLookup
+     */
     @isTest static void getRecordNameTest6() {
         Case targetCase = new Case(Status='New', Subject='', Origin='Phone');
         String[] lstObject = new List<String>{'Case'};
@@ -80,19 +80,19 @@ public class SF_EditRL_LookupFieldCCTest {
     }
 
     /**
-    * Testing for get list data sastify: Show 49 records
-    * @param Id recordId, String[] objectsToSearch
-    * @return ResultDataLookup
-    */
+     * Testing for get list data sastify: Show 49 records
+     * @param Id recordId, String[] objectsToSearch
+     * @return ResultDataLookup
+     */
     @isTest static void lookupTest1() {
         List<Contact> lstContact = new List<Contact>();
-        for(Integer i = 0; i < 49; i++){
+        for (Integer i = 0; i < 49; i++) {
             lstContact.add(new Contact(FirstName='first name' + i, LastName='last name' + i));
         }
 
         insert lstContact;
         List<Id> fixedSearchResults= new List<Id>();
-        for(Contact ct : lstContact){
+        for (Contact ct : lstContact) {
             fixedSearchResults.add(ct.Id);
         }
 
@@ -103,19 +103,18 @@ public class SF_EditRL_LookupFieldCCTest {
     }
 
     /**
-    * Testing for get list data sastify: Show max 50 records
-    * @param Id recordId, String[] objectsToSearch
-    * @return ResultDataLookup
-    */
+     * Testing for get list data sastify: Show max 50 records
+     * @param Id recordId, String[] objectsToSearch
+     * @return ResultDataLookup
+     */
     @isTest static void lookupTest2() {
         List<Contact> lstContact = new List<Contact>();
-        for(Integer i = 0; i < 51; i++){
+        for (Integer i = 0; i < 51; i++) {
             lstContact.add(new Contact(FirstName='first name' + i, LastName='last name' + i));
         }
-
         insert lstContact;
         List<Id> fixedSearchResults= new List<Id>();
-        for(Contact ct : lstContact){
+        for (Contact ct : lstContact) {
             fixedSearchResults.add(ct.Id);
         }
 
@@ -126,13 +125,13 @@ public class SF_EditRL_LookupFieldCCTest {
     }
 
     /**
-    * Testing for get list data sastify: Show max 50 records
-    * @param Id recordId, String[] objectsToSearch
-    * @return ResultDataLookup
-    */
+     * Testing for get list data sastify: Show max 50 records
+     * @param Id recordId, String[] objectsToSearch
+     * @return ResultDataLookup
+     */
     @isTest static void lookupTest3() {
         List<Case> lstCase = new List<Case>();
-        for(Integer i = 0; i < 5; i++){
+        for (Integer i = 0; i < 5; i++) {
             lstCase.add(
                 new Case(
                     Status='New', 

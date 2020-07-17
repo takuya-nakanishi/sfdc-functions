@@ -9,7 +9,7 @@
             component.set("v.options", options);
         }
     },
-    
+
     getSelectedItemsAsArray: function(selectedItemsAsString){
         if (selectedItemsAsString) {
             return selectedItemsAsString.split(";");

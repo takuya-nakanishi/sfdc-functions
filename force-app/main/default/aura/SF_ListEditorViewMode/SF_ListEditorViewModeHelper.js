@@ -3,16 +3,16 @@
 		var columns = [];
 		var spinner = cmp.find('loadingSpinner');
 		$A.util.removeClass(spinner, "slds-hide");
-		// create a server side action. 
+		// create a server side action.
 		var action = cmp.get("c.getColumnInfo");
 		action.setParams({
 			"objectName": cmp.get('v.objectName'),
 			"fields": cmp.get('v.fields')
 		});
 
-		// set a call back   
+		// set a call back
 		action.setCallback(this, function (a) {
-			// store the response return value (wrapper class insatance)  
+			// store the response return value (wrapper class insatance)
 			var result = a.getReturnValue();
 			// console.log('result ---->' + JSON.stringify(result));
 			// set the component attributes value with wrapper class properties.
@@ -25,7 +25,7 @@
 				var pickListFields = [];
 				for (var i = 0; i < result.length; i++) {
 					var column;
-					//if data is reference then change type to url 
+					//if data is reference then change type to url
 					if (result[i].type.toLowerCase() == 'id' || result[i].type.toLowerCase() == 'reference') {
 						result[i].type = 'url';
 						referFields.push({ originField: result[i].apiName, backgroundLink: 'refer' + result[i].typeAttribute.label.fieldName, displayField: result[i].typeAttribute.label.fieldName, referenceTo: result[i].referenceTo ? result[i].referenceTo : cmp.get('v.objectName') });
@@ -117,7 +117,6 @@
 							if (recordList[i][street]) streetStr = recordList[i][street] + ', ';
 
 							recordList[i][addressField] = postalCodeStr + countryStr + stateStr + cityStr + streetStr
-
 							recordList[i]['refer' + addressField] = 'http://google.com/maps/search/' + postalCodeStr + countryStr + stateStr + cityStr + streetStr
 						}
 					}
@@ -130,7 +129,6 @@
 					}
 				}
 				//if there is unique field, then add referId column
-
 				recordList.forEach(function (record) {
 					percentFields.forEach(function (percentField) {
 						record['per' + percentField] = record[percentField] / 100;
@@ -201,7 +199,6 @@
 					cmp.set('v.data', recordList);
 					cmp.set('v.rawData', recordList);
 					cmp.set('v.columns', columns);
-
 				}));
 			}
 			else if (state === "ERROR") {
@@ -209,9 +206,8 @@
 				console.error(errors);
 			}
 			$A.util.addClass(spinner, 'slds-hide');
-
 		});
-		// enqueue the action 
+		// enqueue the action
 		$A.enqueueAction(action);
 	},
 
@@ -224,24 +220,24 @@
 			"parentField": cmp.get('v.parentField'),
 		});
 
-		// set a call back   
+		// set a call back
 		action.setCallback(this, function (a) {
-			// store the response return value (wrapper class insatance)  
+			// store the response return value (wrapper class insatance)
 			var result = a.getReturnValue();
-			//console.log('getRelationshipName: ' + result);  
+			//console.log('getRelationshipName: ' + result);
 			// set the component attributes value with wrapper class properties.
 			if (result && a.getState() === "SUCCESS") {
 				var count = cmp.get('v.data').length;
 				cmp.set('v.relationField', result);
 			}
-			// Dung chỉnh sửa 
+			// Dung chỉnh sửa
 			else if (a.getState() === "ERROR") {
 				var errors = a.getError();
 				console.error(errors);
 			}
 
 		});
-		// enqueue the action 
+		// enqueue the action
 		$A.enqueueAction(action);
 	},
 
@@ -251,9 +247,9 @@
 			"objectName": cmp.get('v.objectName'),
 		});
 
-		// set a call back   
+		// set a call back
 		action.setCallback(this, function (a) {
-			// store the response return value (wrapper class insatance)  
+			// store the response return value (wrapper class insatance)
 			var result = a.getReturnValue();
 			// console.log('result ---->' + JSON.stringify(result));
 			// set the component attributes value with wrapper class properties.
@@ -276,9 +272,8 @@
 				var errors = a.getError();
 				console.error(errors);
 			}
-
 		});
-		// enqueue the action 
+		// enqueue the action
 		$A.enqueueAction(action);
 	},
 
@@ -288,9 +283,9 @@
 			"objectName": cmp.get('v.objectName'),
 		});
 
-		// set a call back   
+		// set a call back
 		action.setCallback(this, function (a) {
-			// store the response return value (wrapper class insatance)  
+			// store the response return value (wrapper class insatance)
 			var result = a.getReturnValue();
 			//console.log('getTabStyle: result ---->' + JSON.stringify(result));
 			if (result == '') {
@@ -304,9 +299,8 @@
 				var errors = a.getError();
 				console.error(errors);
 			}
-
 		});
-		// enqueue the action 
+		// enqueue the action
 		$A.enqueueAction(action);
 	},
 	handleEditRow: function (cmp, event) {
@@ -329,9 +323,9 @@
 			"recordId": recordId
 		});
 
-		// set a call back   
+		// set a call back
 		action.setCallback(this, function (a) {
-			// store the response return value (wrapper class insatance)  
+			// store the response return value (wrapper class insatance)
 			var result = a.getReturnValue();
 			// set the component attributes value with wrapper class properties.
 			if (result && a.getState() === "SUCCESS") {
@@ -348,7 +342,7 @@
 			}
 
 		});
-		// enqueue the action 
+		// enqueue the action
 		$A.enqueueAction(action);
 	},
 	getWidthCols: function (records, dom) {

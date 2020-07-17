@@ -8,20 +8,21 @@
 public class SF_RelatedListEditorCCTest {
 
     /**
-    * Get getPrefix
-    * @param  string sObjectName, string objectName, string showFields, string parentField
-    * @return DataRelatedObject
-    */
-    public static String getPrefix(){        
+     * Get getPrefix
+     * @param  string sObjectName, string objectName, string showFields, string parentField
+     * @return DataRelatedObject
+     */
+    public static String getPrefix() {        
         ApexClass cs =[select NamespacePrefix from ApexClass where Name =:'SF_RelatedListEditorCCTest'];
-                String np = cs.NamespacePrefix;
-        return String.isBlank(np) ? '' : np+'__';        
+        String np = cs.NamespacePrefix;
+        return String.isBlank(np) ? '' : np + '__';        
     }
+
     /**
-    * Get infor of normal object exist empty fields
-    * @param  string sObjectName, string objectName, string showFields, string parentField
-    * @return DataRelatedObject
-    */
+     * Get infor of normal object exist empty fields
+     * @param  string sObjectName, string objectName, string showFields, string parentField
+     * @return DataRelatedObject
+     */
     @isTest static void getRelatedListTest1() {
         string sObjectName = 'Account';
         string objectName = 'Contact';
@@ -35,10 +36,10 @@ public class SF_RelatedListEditorCCTest {
     }
 
     /**
-    * Get infor of normal object with lst fields valid
-    * @param  string sObjectName, string objectName, string showFields, string parentField
-    * @return DataRelatedObject
-    */
+     * Get infor of normal object with lst fields valid
+     * @param  string sObjectName, string objectName, string showFields, string parentField
+     * @return DataRelatedObject
+     */
     @isTest static void getRelatedListTest2() {
         string sObjectName = 'Account';
         string objectName = 'Contact';
@@ -52,10 +53,10 @@ public class SF_RelatedListEditorCCTest {
     }
 
     /**
-    * Get infor of with the compound data field contains one another field
-    * @param  string sObjectName, string objectName, string showFields, string parentField
-    * @return DataRelatedObject
-    */
+     * Get infor of with the compound data field contains one another field
+     * @param  string sObjectName, string objectName, string showFields, string parentField
+     * @return DataRelatedObject
+     */
     @isTest static void getRelatedListTest3() {
         string sObjectName = 'Account';
         string objectName = 'Contact';
@@ -69,10 +70,10 @@ public class SF_RelatedListEditorCCTest {
     }
 
     /**
-    * Get infor of with the compound data field contains two another field
-    * @param  string sObjectName, string objectName, string showFields, string parentField
-    * @return DataRelatedObject
-    */
+     * Get infor of with the compound data field contains two another field
+     * @param  string sObjectName, string objectName, string showFields, string parentField
+     * @return DataRelatedObject
+     */
     @isTest static void getRelatedListTest4() {
         string sObjectName = 'Account';
         string objectName = 'Contact';
@@ -87,10 +88,10 @@ public class SF_RelatedListEditorCCTest {
     }
 
     /**
-    * Get infor of with the compound data field contains two another field
-    * @param  string sObjectName, string objectName, string showFields, string parentField
-    * @return DataRelatedObject
-    */
+     * Get infor of with the compound data field contains two another field
+     * @param  string sObjectName, string objectName, string showFields, string parentField
+     * @return DataRelatedObject
+     */
     @isTest static void getRelatedListTest5() {
         string sObjectName = 'Account';
         string objectName = 'Contact';
@@ -105,165 +106,102 @@ public class SF_RelatedListEditorCCTest {
     }
 
     /**
-    * Saving record error
-    * @param  string sObjectName, string objectName, string showFields, string parentField
-    * @return DataRelatedObject
-    */
+     * Saving record error
+     * @param  string sObjectName, string objectName, string showFields, string parentField
+     * @return DataRelatedObject
+     */
     @isTest static void saveRecordsTest1() {
         //Create list data Contact : 2 records
-            List<Contact> lstContactFirst = new List<Contact>();
-            for(Integer i = 0; i < 2; i++){
-                lstContactFirst.add( new Contact(FirstName = 'FirstName' + i, LastName = 'LastName' + i));
-            }
-
-            insert lstContactFirst;
+        List<Contact> lstContactFirst = new List<Contact>();
+        for (Integer i = 0; i < 2; i++) {
+            lstContactFirst.add( new Contact(FirstName = 'FirstName' + i, LastName = 'LastName' + i));
+        }
+        insert lstContactFirst;
 
         //Create list add: 2 record
-            List<Contact> lstContactAdd = new List<Contact>();
-            for(Integer i = 0; i < 2; i++){
-                lstContactAdd.add( new Contact(FirstName = 'FirstAdd' + i));
-            }
+        List<Contact> lstContactAdd = new List<Contact>();
+        for (Integer i = 0; i < 2; i++) {
+            lstContactAdd.add( new Contact(FirstName = 'FirstAdd' + i));
+        }
 
         // Update list data: 2 record
-            List<Contact> lstUpdate = new List<Contact>{lstContactFirst[0]};
-            lstUpdate[0].FirstName  = 'FirstNameUpdate';
-            lstUpdate[0].LastName   = 'LastNameUpdate';
+        List<Contact> lstUpdate = new List<Contact>{lstContactFirst[0]};
+        lstUpdate[0].FirstName  = 'FirstNameUpdate';
+        lstUpdate[0].LastName   = 'LastNameUpdate';
 
         // Create list delete : 1 record.
-            List<Contact> lstDel = new List<Contact>{lstContactFirst[1]};
+        List<Contact> lstDel = new List<Contact>{lstContactFirst[1]};
 
-            SF_RelatedListEditorCC.SaveTableResult saveResult = SF_RelatedListEditorCC.saveRecords('Account', 'Contact', 
-                                                                                                    lstContactAdd, lstUpdate,
-                                                                                                    lstDel, '', 
-                                                                                                    '', new List<String>{'FirstName', 'LastName'});
+        SF_RelatedListEditorCC.SaveTableResult saveResult = SF_RelatedListEditorCC.saveRecords(
+            'Account', 'Contact', lstContactAdd, lstUpdate, lstDel, '', '', new List<String>{'FirstName', 'LastName'});
 
-            List<Contact> lstRes = [SELECT Id, FirstName, LastName FROM Contact];
-            System.assertEquals(1, lstRes.size());
-            System.assertEquals(false, saveResult.insertResults[0].isSuccess);
-            System.assertEquals(false, saveResult.insertResults[1].isSuccess);
-            System.assertEquals(true, saveResult.updateResults[0].isSuccess);
-            System.assertEquals(true, saveResult.deleteResults[0].isSuccess);
+        List<Contact> lstRes = [SELECT Id, FirstName, LastName FROM Contact];
+        System.assertEquals(1, lstRes.size());
+        System.assertEquals(false, saveResult.insertResults[0].isSuccess);
+        System.assertEquals(false, saveResult.insertResults[1].isSuccess);
+        System.assertEquals(true, saveResult.updateResults[0].isSuccess);
+        System.assertEquals(true, saveResult.deleteResults[0].isSuccess);
     }
 
     /**
-    * Saving record normaly
-    * @param  string sObjectName, string objectName, string showFields, string parentField
-    * @return DataRelatedObject
-    */
+     * Saving record normaly
+     * @param  string sObjectName, string objectName, string showFields, string parentField
+     * @return DataRelatedObject
+     */
     @isTest static void saveRecordsTest2() {
         //Create list data Contact : 2 records
-            List<Contact> lstContactFirst = new List<Contact>();
-            for(Integer i = 0; i < 2; i++){
-                lstContactFirst.add( new Contact(FirstName = 'FirstName' + i, LastName = 'LastName' + i));
-            }
+        List<Contact> lstContactFirst = new List<Contact>();
+        for (Integer i = 0; i < 2; i++) {
+            lstContactFirst.add( new Contact(FirstName = 'FirstName' + i, LastName = 'LastName' + i));
+        }
 
-            insert lstContactFirst;
+        insert lstContactFirst;
 
         //Create list add: 2 record
-            List<Contact> lstContactAdd = new List<Contact>();
-            for(Integer i = 0; i < 2; i++){
-                lstContactAdd.add( new Contact(FirstName = 'FirstAdd' + i, LastName = 'LastAdd' + i));
-            }
+        List<Contact> lstContactAdd = new List<Contact>();
+        for (Integer i = 0; i < 2; i++) {
+            lstContactAdd.add( new Contact(FirstName = 'FirstAdd' + i, LastName = 'LastAdd' + i));
+        }
 
         // Update list data: 2 record
-            List<Contact> lstUpdate = new List<Contact>{lstContactFirst[0]};
-            lstUpdate[0].FirstName  = 'FirstNameUpdate';
-            lstUpdate[0].LastName   = 'LastNameUpdate';
+        List<Contact> lstUpdate = new List<Contact>{lstContactFirst[0]};
+        lstUpdate[0].FirstName  = 'FirstNameUpdate';
+        lstUpdate[0].LastName   = 'LastNameUpdate';
 
         // Create list delete : 1 record.
-            List<Contact> lstDel = new List<Contact>{lstContactFirst[1]};
+        List<Contact> lstDel = new List<Contact>{lstContactFirst[1]};
 
-            SF_RelatedListEditorCC.SaveTableResult saveResult = SF_RelatedListEditorCC.saveRecords('Account', 'Contact', 
-                                                                                                    lstContactAdd, lstUpdate,
-                                                                                                    lstDel, '', 
-                                                                                                    '',new List<String>{'FirstName', 'LastName'});
+        SF_RelatedListEditorCC.SaveTableResult saveResult = SF_RelatedListEditorCC.saveRecords(
+            'Account', 'Contact', lstContactAdd, lstUpdate, lstDel, '', '', new List<String>{'FirstName', 'LastName'});
 
-            List<Contact> lstRes = [SELECT Id, FirstName, LastName FROM Contact];
-            System.assertEquals(3, lstRes.size());
-            System.assertEquals(true, saveResult.insertResults[0].isSuccess);
-            System.assertEquals(true, saveResult.insertResults[1].isSuccess);
-            System.assertEquals(true, saveResult.updateResults[0].isSuccess);
-            System.assertEquals(true, saveResult.deleteResults[0].isSuccess);
+        List<Contact> lstRes = [SELECT Id, FirstName, LastName FROM Contact];
+        System.assertEquals(3, lstRes.size());
+        System.assertEquals(true, saveResult.insertResults[0].isSuccess);
+        System.assertEquals(true, saveResult.insertResults[1].isSuccess);
+        System.assertEquals(true, saveResult.updateResults[0].isSuccess);
+        System.assertEquals(true, saveResult.deleteResults[0].isSuccess);
     }
 
     /**
-    * Saving record normaly with role
-    * @param  string sObjectName, string objectName, string showFields, string parentField
-    * @return DataRelatedObject
-    */
+     * Saving record normaly with role
+     * @param  string sObjectName, string objectName, string showFields, string parentField
+     * @return DataRelatedObject
+     */
     @isTest static void saveRecordsTest3() {
-        // Create contact for link
-            Contact contactParent = new Contact(FirstName = 'FirstName', LastName = 'LastName');
-            insert contactParent;
-
-        //Create list data Opportunity : 2 records
-            List<Opportunity> lstOpportunityFirst = new List<Opportunity>();
-            for(Integer i = 0; i < 2; i++){
-                lstOpportunityFirst.add( new Opportunity(Name='New Opp' + i, StageName='Prospecting', CloseDate = System.today()));
-            }
-
-            insert lstOpportunityFirst;
-
-            List<OpportunityContactRole> lstRole = new List<OpportunityContactRole>();
-            for(Integer i = 0; i < 2; i++){
-                lstRole.add( new OpportunityContactRole(OpportunityId= lstOpportunityFirst[i].Id, ContactId = contactParent.Id));
-            }
-
-            insert lstRole;
-
-        //Create list add: 2 record
-            List<Opportunity> lstOpportunityAdd = new List<Opportunity>();
-            for(Integer i = 0; i < 2; i++){
-                lstOpportunityAdd.add( new Opportunity(Name='New Opp Add' + i, StageName='Prospecting', CloseDate = System.today()));
-            }
-
-        // Update list data: 1 record
-            List<Opportunity> lstUpdate = new List<Opportunity>{lstOpportunityFirst[0]};
-            lstUpdate[0].Name  = 'Opp Update';
-
-        // Create list delete : 1 record.
-            List<Opportunity> lstDel = new List<Opportunity>{lstOpportunityFirst[1]};
-
-            SF_RelatedListEditorCC.SaveTableResult saveResult = SF_RelatedListEditorCC.saveRecords('Contact', 'Opportunity', 
-                                                                                                    lstOpportunityAdd, lstUpdate,
-                                                                                                    lstDel, contactParent.Id, 
-                                                                                                    '', new List<String>{'Name', 'StageName', 'CloseDate'});
-
-            List<Opportunity> lstRes = [SELECT Id, Name FROM Opportunity
-                                         WHERE Id IN (SELECT OpportunityId 
-                                                        FROM OpportunityContactRole 
-                                                       WHERE ContactId =: contactParent.Id)];
-            for(Opportunity op: lstRes){
-                System.debug(op.name);
-            }
-
-            System.assertEquals(3, lstRes.size());
-            System.assertEquals(true, saveResult.insertResults[0].isSuccess);
-            System.assertEquals(true, saveResult.insertResults[1].isSuccess);
-            System.assertEquals(true, saveResult.updateResults[0].isSuccess);
-            System.assertEquals(true, saveResult.deleteResults[0].isSuccess);
-    }
-
-    /**
-    * Saving record abnormaly with role
-    * @param  string sObjectName, string objectName, string showFields, string parentField
-    * @return DataRelatedObject
-    */
-    @isTest static void saveRecordsTest4() {
         // Create contact for link
         Contact contactParent = new Contact(FirstName = 'FirstName', LastName = 'LastName');
         insert contactParent;
 
         //Create list data Opportunity : 2 records
         List<Opportunity> lstOpportunityFirst = new List<Opportunity>();
-        for(Integer i = 0; i < 2; i++){
+        for (Integer i = 0; i < 2; i++) {
             lstOpportunityFirst.add( new Opportunity(Name='New Opp' + i, StageName='Prospecting', CloseDate = System.today()));
         }
 
         insert lstOpportunityFirst;
 
         List<OpportunityContactRole> lstRole = new List<OpportunityContactRole>();
-        for(Integer i = 0; i < 2; i++){
+        for (Integer i = 0; i < 2; i++) {
             lstRole.add( new OpportunityContactRole(OpportunityId= lstOpportunityFirst[i].Id, ContactId = contactParent.Id));
         }
 
@@ -271,7 +209,68 @@ public class SF_RelatedListEditorCCTest {
 
         //Create list add: 2 record
         List<Opportunity> lstOpportunityAdd = new List<Opportunity>();
-        for(Integer i = 0; i < 2; i++){
+        for (Integer i = 0; i < 2; i++) {
+            lstOpportunityAdd.add( new Opportunity(Name='New Opp Add' + i, StageName='Prospecting', CloseDate = System.today()));
+        }
+
+        // Update list data: 1 record
+        List<Opportunity> lstUpdate = new List<Opportunity>{lstOpportunityFirst[0]};
+        lstUpdate[0].Name  = 'Opp Update';
+
+        // Create list delete : 1 record.
+        List<Opportunity> lstDel = new List<Opportunity>{lstOpportunityFirst[1]};
+
+        SF_RelatedListEditorCC.SaveTableResult saveResult = SF_RelatedListEditorCC.saveRecords(
+            'Contact', 'Opportunity', lstOpportunityAdd, lstUpdate, lstDel, contactParent.Id, '', new List<String>{'Name', 'StageName', 'CloseDate'});
+
+        List<Opportunity> lstRes = [
+            SELECT Id, Name FROM Opportunity
+            WHERE Id IN (
+                SELECT OpportunityId 
+                FROM OpportunityContactRole 
+                WHERE ContactId =: contactParent.Id
+            )
+        ];
+ 
+        for (Opportunity op: lstRes) {
+            System.debug(op.name);
+        }
+
+        System.assertEquals(3, lstRes.size());
+        System.assertEquals(true, saveResult.insertResults[0].isSuccess);
+        System.assertEquals(true, saveResult.insertResults[1].isSuccess);
+        System.assertEquals(true, saveResult.updateResults[0].isSuccess);
+        System.assertEquals(true, saveResult.deleteResults[0].isSuccess);
+    }
+
+    /**
+     * Saving record abnormaly with role
+     * @param  string sObjectName, string objectName, string showFields, string parentField
+     * @return DataRelatedObject
+     */
+    @isTest static void saveRecordsTest4() {
+        // Create contact for link
+        Contact contactParent = new Contact(FirstName = 'FirstName', LastName = 'LastName');
+        insert contactParent;
+
+        //Create list data Opportunity : 2 records
+        List<Opportunity> lstOpportunityFirst = new List<Opportunity>();
+        for (Integer i = 0; i < 2; i++) {
+            lstOpportunityFirst.add( new Opportunity(Name='New Opp' + i, StageName='Prospecting', CloseDate = System.today()));
+        }
+
+        insert lstOpportunityFirst;
+
+        List<OpportunityContactRole> lstRole = new List<OpportunityContactRole>();
+        for (Integer i = 0; i < 2; i++) {
+            lstRole.add( new OpportunityContactRole(OpportunityId= lstOpportunityFirst[i].Id, ContactId = contactParent.Id));
+        }
+
+        insert lstRole;
+
+        //Create list add: 2 record
+        List<Opportunity> lstOpportunityAdd = new List<Opportunity>();
+        for (Integer i = 0; i < 2; i++) {
             lstOpportunityAdd.add( new Opportunity(StageName='Prospecting', CloseDate = System.today()));
         }
 
@@ -282,15 +281,17 @@ public class SF_RelatedListEditorCCTest {
         // Create list delete : 1 record.
         List<Opportunity> lstDel = new List<Opportunity>{lstOpportunityFirst[1]};
 
-        SF_RelatedListEditorCC.SaveTableResult saveResult = SF_RelatedListEditorCC.saveRecords('Contact', 'Opportunity', 
-                                                                                                lstOpportunityAdd, lstUpdate,
-                                                                                                lstDel, contactParent.Id, 
-                                                                                                '', new List<String>{'Name', 'StageName', 'CloseDate'});
+        SF_RelatedListEditorCC.SaveTableResult saveResult = SF_RelatedListEditorCC.saveRecords(
+            'Contact', 'Opportunity', lstOpportunityAdd, lstUpdate, lstDel, contactParent.Id, '', new List<String>{'Name', 'StageName', 'CloseDate'});
 
-        List<Opportunity> lstRes = [SELECT Id, Name FROM Opportunity
-                                     WHERE Id IN (SELECT OpportunityId 
-                                                    FROM OpportunityContactRole 
-                                                    WHERE ContactId =: contactParent.Id)];
+        List<Opportunity> lstRes = [
+            SELECT Id, Name FROM Opportunity
+            WHERE Id IN (
+                SELECT OpportunityId 
+                FROM OpportunityContactRole 
+                WHERE ContactId =: contactParent.Id
+            )
+        ];
 
         System.assertEquals(1, lstRes.size());
         System.assertEquals(false, saveResult.insertResults[0].isSuccess);
@@ -300,55 +301,20 @@ public class SF_RelatedListEditorCCTest {
     }
 
     /**
-    * Testing getRecordList normal
-    * @param  Schema.SobjectField
-    * @return GetRecordListResult
-    
-    @isTest static void getRecordListTest1() {
-        Account acc = new Account(Name='AccountTest');
-        insert acc;
-
-        List<Contact> lstContact = new List<Contact>();
-        for(Integer i = 0; i < 5; i++){
-            lstContact.add( new Contact(FirstName = 'FirstName' + i, LastName = 'LastName' + i, AccountId = acc.Id));
-        }
-
-        insert lstContact;
-
-
-        String objectName = 'Contact';
-        String fields = 'Id,Name, MailingAddress, RecordTypeid, AccountId, CreatedDate,OwnerId, DoNotCall, CleanStatus';
-        String limitRecs = '10';
-        String recordId = acc.Id;
-        String sObjectName = 'Account';
-        String parentField = '';
-        String offset = '0';
-        String filter = 'AccountId = \'' + acc.Id + '\'';
-
-        SF_RelatedListEditorCC.GetRecordListResult dataRecordList = SF_RelatedListEditorCC.getRecordList(objectName, fields, limitRecs, 
-                                                                                                        recordId, parentField,
-                                                                                                        offset,filter,true,'');
-        
-        System.assertEquals(5, dataRecordList.records.size());
-    }
-*/
-    /**
-    * Testing getRecordList normal -Case
-    * @param  Schema.SobjectField
-    * @return GetRecordListResult
-    */
+     * Testing getRecordList normal -Case
+     * @param  Schema.SobjectField
+     * @return GetRecordListResult
+     */
     @isTest static void getRecordListTest2() {
         Contact ct = new Contact(FirstName = 'FirstName', LastName = 'LastName');
         insert ct;
 
         List<Case> lstCase = new List<Case>();
-        for(Integer i = 0; i < 5; i++){
+        for (Integer i = 0; i < 5; i++) {
             lstCase.add( new Case(Status = 'Working', Origin = 'Phone', ContactId = ct.Id));
         }
 
         insert lstCase;
-
-
         String objectName = 'Case';
         String fields = 'Status,Origin';
         String limitRecs = '10';
@@ -358,133 +324,17 @@ public class SF_RelatedListEditorCCTest {
         String offset = '0';
         String filter = '';
 
-        SF_RelatedListEditorCC.GetRecordListResult dataRecordList = SF_RelatedListEditorCC.getRecordList(objectName, fields, limitRecs, 
-                                                                                                        recordId, parentField,
-                                                                                                        offset,filter,true,'');
+        SF_RelatedListEditorCC.GetRecordListResult dataRecordList = SF_RelatedListEditorCC.getRecordList(
+            objectName, fields, limitRecs,  recordId, parentField, offset, filter, true, '');
         
         System.assertEquals(5, dataRecordList.records.size());
     }
 
     /**
-    * Testing getRecordList normal -Opportunity
-    * @param  Schema.SobjectField
-    * @return GetRecordListResult
-  
-    @isTest static void getRecordListTest3() {
-        Contact ct = new Contact(FirstName = 'FirstName', LastName = 'LastName');
-        insert ct;
-
-        Account acc = new Account(Name = 'Account Test');
-        insert acc;
-
-        List<Opportunity> lstOp = new List<Opportunity>();
-        for(Integer i = 0; i < 5; i++){
-            lstOp.add( new Opportunity(Name = 'Opportunity Name' + i, StageName = 'Prospecting', CloseDate = System.today()));
-        }
-
-        insert lstOp;
-
-        List<OpportunityContactRole> lstTarget = new List<OpportunityContactRole>();
-        for(Integer j =0; j < lstOp.size(); j++){
-            lstTarget.add(new OpportunityContactRole(OpportunityId = lstOp[j].Id, ContactId = ct.Id));
-        }
-
-        insert lstTarget;
-
-
-        String objectName = 'Opportunity';
-        String fields = 'Name,StageName,AccountId';
-        String limitRecs = '10';
-        String recordId = ct.Id;
-        String sObjectName = 'Contact';
-        String parentField = '';
-        String offset = '0';
-        String filter = '';
-
-        SF_RelatedListEditorCC.GetRecordListResult dataRecordList = SF_RelatedListEditorCC.getRecordList(objectName, fields, limitRecs, 
-                                                                                                        recordId, parentField,
-                                                                                                        offset,filter,true,'');
-        
-        System.assertEquals(5, dataRecordList.records.size());
-    }
-  */
-    /**
-    * Testing getRecordList with match parent field
-    * @param  Schema.SobjectField
-    * @return GetRecordListResult
-    */
-    @isTest static void getRecordListTest4() {
-        /*Contact con = new Contact(FirstName = 'FirstName', LastName = 'LastName');
-        insert con;
-
-        List<ListEditor__testObject__c> lstCustom = new List<ListEditor__testObject__c>();
-        for(Integer i = 0; i < 5; i++){
-            lstCustom.add( new ListEditor__testObject__c(Name = 'Custom Name' + i, ListEditor__Contact2__c = con.Id));
-        }
-
-        insert lstCustom;
-
-
-        String objectName = 'ListEditor__testObject__c';
-        String fields = 'Id,Name';
-        String limitRecs = '3';
-        String recordId = con.Id;
-        String sObjectName = 'Contact';
-        String parentField = 'ListEditor__Contact2__c';
-        String offset = '0';
-
-        SF_RelatedListEditorCC.GetRecordListResult dataRecordList = SF_RelatedListEditorCC.getRecordList(objectName, fields, limitRecs, 
-                                                                                                        recordId,sObjectName, parentField,
-                                                                                                        offset);
-        
-        System.assertEquals(3, dataRecordList.records.size());*/
-    }
-
-    /**
-    * Testing getRecordList normal -Contract
-    * @param  Schema.SobjectField
-    * @return GetRecordListResult
-    */
-    // @isTest static void getRecordListTest4() {
-    //     Contact ct = new Contact(FirstName = 'FirstName', LastName = 'LastName');
-    //     insert ct;
-    //     Account ac = new Account(Name = 'Account Test');
-    //     insert ac;
-
-    //     List<Contract> lstCt = new List<Contract>();
-    //     for(Integer i = 0; i < 5; i++){
-    //         lstCt.add( new Contract(AccountId = ac.Id, Status = 'Draft', StartDate = System.today(), ContractTerm = 5));
-    //     }
-
-    //     insert lstCt;
-
-    //     List<ContractContactRole> lstTarget = new List<ContractContactRole>();
-    //     for(Integer j =0; j < lstCt.size(); j++){
-    //         lstTarget.add(new ContractContactRole(ContractId = lstCt[j].Id, ContactId = ct.Id));
-    //     }
-
-    //     insert lstTarget;
-
-    //     String objectName = 'Contract';
-    //     String fields = 'AccountId,Status,StartDate,ContractTerm';
-    //     String limitRecs = '10';
-    //     String recordId = ct.Id;
-    //     String sObjectName = 'Contact';
-    //     String parentField = '';
-    //     String offset = '0';
-
-    //     SF_RelatedListEditorCC.GetRecordListResult dataRecordList = SF_RelatedListEditorCC.getRecordList(objectName, fields, limitRecs, 
-    //                                                                                                     recordId,sObjectName, parentField,
-    //                                                                                                     offset);
-        
-    //     System.assertEquals(5, dataRecordList.records.size());
-    // }
-
-    /**
-    * deleteRelatedRecord
-    * @param  String recordId
-    * @return deleteRelatedRecord
-    */
+     * deleteRelatedRecord
+     * @param  String recordId
+     * @return deleteRelatedRecord
+     */
     @isTest static void deleteRelatedRecordTest1() {
         Contact ct = new Contact(FirstName = 'FirstName', LastName = 'LastName');
         insert ct;
@@ -495,24 +345,23 @@ public class SF_RelatedListEditorCCTest {
     }
 
     /**
-    * deleteRelatedRecord
-    * @param  String recordId
-    * @return deleteRelatedRecord
-    */
+     * deleteRelatedRecord
+     * @param  String recordId
+     * @return deleteRelatedRecord
+     */
     @isTest static void deleteRelatedRecordTest2() {
         //Contact ct = new Contact(FirstName = 'FirstName', LastName = 'LastName');
         //insert ct;
 
         String result = SF_RelatedListEditorCC.deleteRelatedRecord('IdInvalid');
-
         System.assertNotEquals('successfully deleted', result);
     }
 
     /**
-    * Get child relationship
-    * @param  String childObjectName, String parentObjectName, String parentFieldName
-    * @return String result
-    */
+     * Get child relationship
+     * @param  String childObjectName, String parentObjectName, String parentFieldName
+     * @return String result
+     */
     @isTest static void getChildRelationshipNameTest1() {
         String expectResult = 'Contacts';
         String result = SF_RelatedListEditorCC.getChildRelationshipName('Contact', 'Account', '');
@@ -521,10 +370,10 @@ public class SF_RelatedListEditorCCTest {
     }
 
     /**
-    * Get child relationship
-    * @param  String childObjectName, String parentObjectName, String parentFieldName
-    * @return String result
-    */
+     * Get child relationship
+     * @param  String childObjectName, String parentObjectName, String parentFieldName
+     * @return String result
+     */
     @isTest static void getChildRelationshipNameTest2() {
         String expectResult = 'Contacts';
         String result = SF_RelatedListEditorCC.getChildRelationshipName('Contact', 'Account', 'AccountId');
@@ -533,10 +382,10 @@ public class SF_RelatedListEditorCCTest {
     }
 
     /**
-    * getColumnInfo
-    * @param  String objectName, String fields
-    * @return List<ColumnInfo>
-    */
+     * getColumnInfo
+     * @param  String objectName, String fields
+     * @return List<ColumnInfo>
+     */
     @isTest static void getColumnInfoTest1() {
         String objectName = 'Contact';
         String fields = 'Id, AccountId, MailingAddress, Email, Phone, LeadSource,Phone';
@@ -545,20 +394,20 @@ public class SF_RelatedListEditorCCTest {
     }
 
     /**
-    * getOrderFieldWithPrefix case obnormal
-    * @param  String objectName
-    * @return String
-    */
+     * getOrderFieldWithPrefix case obnormal
+     * @param  String objectName
+     * @return String
+     */
     @isTest static void getOrderFieldWithPrefixTest1() {
         String objectName = 'ObjectNotExist';
         System.assertEquals('', SF_RelatedListEditorCC.getOrderFieldWithPrefix(objectName));
     }
 
     /**
-    * getOrderFieldWithPrefix case normal
-    * @param  String objectName
-    * @return String
-    */
+     * getOrderFieldWithPrefix case normal
+     * @param  String objectName
+     * @return String
+     */
     @isTest static void getOrderFieldWithPrefixTest2() {
         String objectName = 'Contact';
         String defaultOrderField = 'ListEditor__LE_Order__c';
@@ -567,8 +416,7 @@ public class SF_RelatedListEditorCCTest {
         System.assert(isValid);
     }
 
-
-    @isTest static void htmlInputTypeTest(){
+    @isTest static void htmlInputTypeTest() {
         SF_RelatedListEditorCC.HtmlInputType htmlType = new SF_RelatedListEditorCC.HtmlInputType('TEXTAREA', 0);
         System.assert(htmlType.mainType == 'standard');
         System.assert(htmlType.subType == 'text');
@@ -625,26 +473,26 @@ public class SF_RelatedListEditorCCTest {
         System.assert(htmlType.mainType == 'invalid');
         System.assert(htmlType.subType == 'invalid');
     }
-    @isTest static void relationshipTest(){
+    @isTest static void relationshipTest() {
         SF_RelatedListEditorCC.Relationship relation = new SF_RelatedListEditorCC.Relationship('SomeRelationName');
         System.assert(relation.relationshipName == 'SomeRelationName');
         System.assert(relation.objects == new list<String>());
     }
 
-    @isTest static void DMLResultTest(){
+    @isTest static void DMLResultTest() {
         SF_RelatedListEditorCC.DMLResult result = new SF_RelatedListEditorCC.DMLResult('Error', true,'Get error');
         System.assert(result.id == 'Error');
         System.assert(result.isSuccess == true);
         System.assert(result.error == 'Get error');
     }
 
-    @isTest static void typeAttributesTest(){
+    @isTest static void typeAttributesTest() {
         SF_RelatedListEditorCC.TypeAttributes result = new SF_RelatedListEditorCC.TypeAttributes(5);
         System.assert(result.minimumFractionDigits == 5);
         System.assert(result.maximumFractionDigits == 5);
     }
 
-    @isTest static void locationFieldTest(){
+    @isTest static void locationFieldTest() {
         SF_RelatedListEditorCC.LocationField result = new SF_RelatedListEditorCC.LocationField('fieldApi__c');
         System.assert(result.fieldApi == 'fieldApi__c');
         System.assert(result.fieldDetail == 'fieldApi__latitude__s,fieldApi__longitude__s');
