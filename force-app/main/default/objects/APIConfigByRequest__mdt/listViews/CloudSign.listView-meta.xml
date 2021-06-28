@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CloudSign</fullName>
+    <columns>MasterLabel</columns>
+    <columns>DeveloperName</columns>
+    <columns>HttpMethod__c</columns>
+    <columns>APIConfigByService__c</columns>
+    <columns>EndpointPath__c</columns>
+    <columns>TimeOut__c</columns>
+    <columns>SuccessSTNo__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>APIConfigByService__c</field>
+        <operation>contains</operation>
+        <value>CLOUD_SIGN</value>
+    </filters>
+    <label>クラウドサイン関連</label>
+    <language>ja</language>
+</ListView>

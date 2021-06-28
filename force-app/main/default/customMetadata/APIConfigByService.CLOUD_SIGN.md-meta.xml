@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>クラウドサイン API基本情報</label>
+    <protected>false</protected>
+    <values>
+        <field>BasicEndpoint_Sandbox__c</field>
+        <value xsi:type="xsd:string">https://api-sandbox.cloudsign.jp</value>
+    </values>
+    <values>
+        <field>BasicEndpoint__c</field>
+        <value xsi:type="xsd:string">https://api.cloudsign.jp</value>
+    </values>
+    <values>
+        <field>CLIENT_ID_Sandbox__c</field>
+        <value xsi:type="xsd:string">9efab976-2fc2-4698-bd1e-ae258951f6ad</value>
+    </values>
+    <values>
+        <field>CLIENT_ID__c</field>
+        <value xsi:type="xsd:string">d6c83975-1ece-493b-a0a5-8c63852ef857</value>
+    </values>
+    <values>
+        <field>CLIENT_SECRET_Sandbox__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>CLIENT_SECRET__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Description__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>RedirectUrl_Sandbox__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>RedirectUrl__c</field>
+        <value xsi:nil="true"/>
+    </values>
+</CustomMetadata>
